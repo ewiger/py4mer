@@ -1,0 +1,36 @@
+John Lynch
+5/13/13
+
+
+Just for the record in case anyone else has problems with the installation.
+
+I have now followed the same process with a fresh install of Ubuntu Gnome 13.04 upgraded to Gnome 3.8.  It worked perfectly for both Python 2.7.4 and 3.3.1.
+Root directory for this install was /
+pythonx is used to select the version for the installation.  I ran them one after the other, first python (for 2.7) and then python3 (for 3.3.1).
+
+cd <your choice of root for this install>
+# you won't need sudo if you are installing to a VE
+wget "http://repo.continuum.io/pkgs/free/linux-64/llvm-3.2-0.tar.bz2"
+tar -xjf llvm-3.2-0.tar.bz2
+PATH+=":<your choice of root for this install>/bin"
+export LD_LIBRARY_PATH="<your choice of root for this install>/lib"
+export LLVM_CONFIG_PATH="<your choice of root for this install>/bin/llvm-config"
+$LLVM_CONFIG_PATH --cflags # test llvm-config
+export LLVMPY_DYNLINK=1
+export CFLAGS="-Wno-strict-aliasing -Wno-unused -Wno-write-strings -Wno-unused-function"
+git clone git://github.com/hgrecco/llvmpy.git -q
+cd llvmpy ; python setup.py install -q >/dev/null ; cd ..
+
+sudo apt-get install curl
+curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+install distribute with sudo python3.x distribute_setup.py
+sudo python3.x get-pip.py
+
+git clone https://github.com/numba/numba.git
+cd numba
+pip-x.x install -r requirements.txt
+pythonx setup.py install
+
+
+Add export LD_LIBRARY_PATH="<your choice of root for this install>/lib" to .bashrc
+  this is the file where you find libLLVM-3.2.so
